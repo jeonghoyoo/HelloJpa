@@ -1,5 +1,7 @@
 package hellojpa;
 
+import domain.Member;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -19,7 +21,7 @@ public class JpaMain {
             //#2-1. 비영속 컨텍스트 (New or transient)
             Member member = new Member();
             member.setId(100L);
-            member.setName("Hello JPA");
+            member.setUsername("Hello JPA");
 
             //#2-2. 영속 컨텍스트 (managed)
             System.out.println("BEFORE");
