@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,7 +34,8 @@ public class Member {
 
     private Integer age;
 
-    @Enumerated(EnumType.STRING) //Enum 속성은 언제든 순서가 바뀔 수 있으므로, Ordinary를 사용하면 안됨 (default : ordinary)
+    //@Enumerated(EnumType.ORDINAL) //Enum 속성은 언제든 순서가 바뀔 수 있으므로, Ordinary를 사용하면 안됨 (default : ordinary)
+    @Convert(converter = RoleTypeConverter.class)
     private RoleType roleType;
 
     private LocalDateTime createdDate;
