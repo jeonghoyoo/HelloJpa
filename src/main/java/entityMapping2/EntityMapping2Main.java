@@ -1,7 +1,9 @@
-package relationshipMapping;
+package entityMapping2;
 
+import domain.Book;
+import domain.Item;
 import domain.Member;
-import domain.Team;
+import entityMapping.RoleType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,7 +11,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class RelationshipMapping {
+public class EntityMapping2Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -17,17 +19,20 @@ public class RelationshipMapping {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            Team team = new Team();
-            team.setName("TEAM_A");
-            em.persist(team);
+            Book book = new Book();
+            book.setName("JAVA ORM 표준 JPA 프로그래밍");
+            book.setPrice(100000);
+            book.setAuthor("김영한님");
+            book.setIsbn("123456789");
 
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.changeTeam(team);
-            em.persist(member1);
+            em.persist(book);
 
-            Team team1 = em.find(Team.class, team.getId());
-            List<Member> members = team1.getMembers();
+            em.flush();
+            em.clear();
+
+            Book book1 = em.find(Book.class, book.getId());
+            System.out.println("book1.getName() = " + book1.getName());
+
             tx.commit();
         }catch (Exception e) {
             e.printStackTrace();

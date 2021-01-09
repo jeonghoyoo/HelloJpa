@@ -6,6 +6,11 @@
         <!--Gradle로 빌드시 @Entity 클래스로 자동으로 인식되지 않아 아래 추가 필요-->
         <class>domain.Member</class>
         <class>domain.Team</class>
+        <class>domain.Locker</class>
+        <class>domain.Item</class>
+        <class>domain.Book</class>
+        <class>domain.Album</class>
+        <class>domain.Movie</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

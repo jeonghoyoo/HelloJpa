@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @SequenceGenerator(name="member_seq_generator", sequenceName = "seq_member", initialValue = 1, allocationSize = 50)
-public class Member {
+public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -39,13 +40,14 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
     private Integer age;
 
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
-
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
 
     @Lob
     private String description;
@@ -64,8 +66,6 @@ public class Member {
                 ", team=" + team.toString() +
                 ", age=" + age +
                 ", roleType=" + roleType +
-                ", createdDate=" + createdDate +
-                ", lastModifiedDate=" + lastModifiedDate +
                 ", description='" + description + '\'' +
                 '}';
     }
