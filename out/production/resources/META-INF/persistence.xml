@@ -13,6 +13,7 @@
         <class>domain.Movie</class>
         <class>domain.Parent</class>
         <class>domain.Child</class>
+        <class>domain.AddressEntity</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

@@ -7,9 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Converter;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +28,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -57,18 +64,23 @@ public class Member {
     private String description;
 
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="city",
-                    column=@Column(name = "HOME_CITY")),
-            @AttributeOverride(name="street",
-                    column=@Column(name = "HOME_STREET")),
-            @AttributeOverride(name="zipcode",
-                    column=@Column(name = "HOME_ZIPCODE"))
-    })
-    private Address homeAddress;
-
-    @Embedded
     private Address officeAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = {
+            @JoinColumn(name = "MEMBER_ID")
+    })
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    /*@ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = {
+            @JoinColumn(name = "MEMBER_ID")
+    })*/
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     @Embedded
     private Period period;
