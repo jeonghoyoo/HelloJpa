@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Converter;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,7 +32,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @SequenceGenerator(name="member_seq_generator", sequenceName = "seq_member", initialValue = 1, allocationSize = 50)
-public class Member extends BaseEntity {
+public class Member {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -53,6 +56,22 @@ public class Member extends BaseEntity {
     @Lob
     private String description;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="city",
+                    column=@Column(name = "HOME_CITY")),
+            @AttributeOverride(name="street",
+                    column=@Column(name = "HOME_STREET")),
+            @AttributeOverride(name="zipcode",
+                    column=@Column(name = "HOME_ZIPCODE"))
+    })
+    private Address homeAddress;
+
+    @Embedded
+    private Address officeAddress;
+
+    @Embedded
+    private Period period;
 
     public void changeTeam(Team team) {
         this.team = team;
