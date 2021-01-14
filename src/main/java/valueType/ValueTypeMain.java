@@ -18,10 +18,18 @@ public class ValueTypeMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            Member member = new Member();
-            member.setUsername("hello");
-            //member.setAddress((new Address("city", "street", "zipcode")));
-            em.persist(member);
+            Address address = new Address("city", "street", "zipcode");
+            Member member1 = new Member();
+            member1.setOfficeAddress(address);
+            member1.setUsername("member1");
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setOfficeAddress(address);
+            member2.setUsername("member2");
+            em.persist(member2);
+
+            address.setCity("newCity");
             tx.commit();
         }catch (Exception e) {
             e.printStackTrace();
