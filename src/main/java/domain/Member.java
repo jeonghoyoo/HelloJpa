@@ -24,6 +24,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -38,6 +40,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@NamedQuery(
+            name = "Member.findByUsername",
+            query = "select m from Member m where m.username = :username"
+)
 @SequenceGenerator(name="member_seq_generator", sequenceName = "seq_member", initialValue = 1, allocationSize = 50)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
@@ -47,7 +53,7 @@ public class Member {
     @Column(name = "name")
     private String username;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
@@ -65,6 +71,9 @@ public class Member {
 
     @Embedded
     private Address officeAddress;
+
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
 
     @ElementCollection
     @CollectionTable(name = "FAVORITE_FOOD", joinColumns = {
@@ -95,7 +104,6 @@ public class Member {
         return "Member{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", team=" + team.toString() +
                 ", age=" + age +
                 ", roleType=" + roleType +
                 ", description='" + description + '\'' +
